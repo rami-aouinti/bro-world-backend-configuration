@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Tests\Unit\General\Infrastructure\Service;
 
-use App\General\Infrastructure\Service\LexikJwtAuthenticatorService;
-use App\General\Infrastructure\ValueObject\SymfonyUser;
 use App\General\Domain\ValueObject\UserId;
+use App\General\Infrastructure\Service\LexikJwtAuthenticatorService;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Lexik\Bundle\JWTAuthenticationBundle\TokenExtractor\TokenExtractorInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\Event\ControllerEvent;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
-/**
- * @package App\Tests\Unit\General\Infrastructure\Service
- */
 class LexikJwtAuthenticatorServiceTest extends TestCase
 {
     public function testGetUserIdReturnsNullWhenIdentifierMissing(): void
