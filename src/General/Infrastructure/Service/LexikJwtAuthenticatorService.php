@@ -43,16 +43,24 @@ final class LexikJwtAuthenticatorService implements AuthenticatorServiceInterfac
 
     public function getUserId(): ?UserId
     {
+        if ($this->userId === null) {
+            return null;
+        }
+
         return new UserId($this->userId);
     }
 
     public function getSymfonyUser(): ?SymfonyUser
     {
+        if ($this->userId === null) {
+            return null;
+        }
+
         return new SymfonyUser(
             $this->userId,
-            $this->fullName,
-            $this->avatar,
-            $this->roles
+            $this->fullName ?? '',
+            $this->avatar ?? '',
+            $this->roles ?? []
         );
     }
 
