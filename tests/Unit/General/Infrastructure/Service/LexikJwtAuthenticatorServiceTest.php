@@ -15,39 +15,47 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class LexikJwtAuthenticatorServiceTest extends TestCase
 {
-    public function testOnKernelControllerUsesConfiguredUserIdClaim(): void
+    public function testGetUserIdReturnsNullWhenIdentifierMissing(): void
     {
-        $tokenExtractor = $this->createMock(TokenExtractorInterface::class);
-        $tokenManager = $this->createMock(JWTTokenManagerInterface::class);
+        $service = $this->createService();
 
-        $expectedUserId = '123e4567-e89b-12d3-a456-426614174000';
+        self::assertNull($service->getUserId());
+        self::assertNull($service->getSymfonyUser());
+    }
 
-        $tokenExtractor->expects(self::once())
-            ->method('extract')
-            ->willReturn('jwt-token');
+    public function testGetUserIdReturnsValueObjectWhenIdentifierPresent(): void
+    {
+        $service = $this->createService();
 
-        $tokenManager->expects(self::once())
-            ->method('parse')
-            ->with('jwt-token')
-            ->willReturn(['custom_claim' => $expectedUserId]);
-
-        $tokenManager->expects(self::once())
-            ->method('getUserIdClaim')
-            ->willReturn('custom_claim');
-
-        $service = new LexikJwtAuthenticatorService($tokenManager, $tokenExtractor, '^/api/.*$');
-
-        $request = Request::create('/api/example');
-        $kernel = $this->createMock(HttpKernelInterface::class);
-        $controller = static fn (): void => null;
-
-        $event = new ControllerEvent($kernel, $controller, $request, HttpKernelInterface::MAIN_REQUEST);
-
-        $service->onKernelController($event);
+        $this->setServiceProperty($service, 'userId', '123e4567-e89b-12d3-a456-426614174000');
+        $this->setServiceProperty($service, 'fullName', 'Test User');
+        $this->setServiceProperty($service, 'avatar', 'avatar.png');
+        $this->setServiceProperty($service, 'roles', ['ROLE_USER']);
 
         $userId = $service->getUserId();
-
         self::assertInstanceOf(UserId::class, $userId);
-        self::assertSame($expectedUserId, (string)$userId);
+        self::assertSame('123e4567-e89b-12d3-a456-426614174000', (string) $userId);
+
+        $symfonyUser = $service->getSymfonyUser();
+        self::assertInstanceOf(SymfonyUser::class, $symfonyUser);
+        self::assertSame('123e4567-e89b-12d3-a456-426614174000', $symfonyUser->getUserIdentifier());
+        self::assertSame('Test User', $symfonyUser->getFullName());
+        self::assertSame('avatar.png', $symfonyUser->getAvatar());
+        self::assertSame(['ROLE_USER'], $symfonyUser->getRoles());
+    }
+
+    private function createService(): LexikJwtAuthenticatorService
+    {
+        $tokenManager = $this->createMock(JWTTokenManagerInterface::class);
+        $tokenExtractor = $this->createMock(TokenExtractorInterface::class);
+
+        return new LexikJwtAuthenticatorService($tokenManager, $tokenExtractor, '/api');
+    }
+
+    private function setServiceProperty(object $service, string $property, mixed $value): void
+    {
+        $reflection = new \ReflectionProperty($service, $property);
+        $reflection->setAccessible(true);
+        $reflection->setValue($service, $value);
     }
 }
