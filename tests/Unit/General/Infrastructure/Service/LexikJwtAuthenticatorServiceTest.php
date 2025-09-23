@@ -15,6 +15,41 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 class LexikJwtAuthenticatorServiceTest extends TestCase
 {
+    public function testOnKernelControllerUsesConfiguredUserIdClaim(): void
+    {
+        $tokenExtractor = $this->createMock(TokenExtractorInterface::class);
+        $tokenManager = $this->createMock(JWTTokenManagerInterface::class);
+
+        $expectedUserId = '123e4567-e89b-12d3-a456-426614174000';
+
+        $tokenExtractor->expects(self::once())
+            ->method('extract')
+            ->willReturn('jwt-token');
+
+        $tokenManager->expects(self::once())
+            ->method('parse')
+            ->with('jwt-token')
+            ->willReturn(['custom_claim' => $expectedUserId]);
+
+        $tokenManager->expects(self::once())
+            ->method('getUserIdClaim')
+            ->willReturn('custom_claim');
+
+        $service = new LexikJwtAuthenticatorService($tokenManager, $tokenExtractor, '^/api/.*$');
+
+        $request = Request::create('/api/example');
+        $kernel = $this->createMock(HttpKernelInterface::class);
+        $controller = static fn (): void => null;
+
+        $event = new ControllerEvent($kernel, $controller, $request, HttpKernelInterface::MAIN_REQUEST);
+
+        $service->onKernelController($event);
+
+        $userId = $service->getUserId();
+
+        self::assertInstanceOf(UserId::class, $userId);
+        self::assertSame($expectedUserId, (string)$userId);
+    }  
     public function testGetUserIdReturnsNullWhenIdentifierMissing(): void
     {
         $service = $this->createService();
