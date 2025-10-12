@@ -15,20 +15,12 @@ class RequestMapper extends RestRequestMapper
      * @var array<int, non-empty-string>
      */
     protected static array $properties = [
-        'title',
-        'description',
         'userId',
-        'photo',
-        'birthday',
-        'gender',
-        'googleId',
-        'githubId',
-        'githubUrl',
-        'instagramUrl',
-        'linkedInId',
-        'linkedInUrl',
-        'twitterUrl',
-        'facebookUrl',
-        'phone'
+        'configurationKey',
+        'configurationValue',
+        'contextKey',
+        'contextId',
+        'workplaceId',
+        'flags',
     ];
 }
