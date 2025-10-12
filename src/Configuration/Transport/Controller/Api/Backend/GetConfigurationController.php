@@ -14,6 +14,8 @@ use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\Property;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
@@ -29,7 +31,8 @@ readonly class GetConfigurationController
 {
     public function __construct(
         private SerializerInterface $serializer,
-        private ConfigurationRepositoryInterface $repository
+        private ConfigurationRepositoryInterface $repository,
+        private CacheItemPoolInterface $cache
     ) {
     }
 
@@ -38,6 +41,7 @@ readonly class GetConfigurationController
      *
      * @throws JsonException
      * @throws NotSupported
+     * @throws InvalidArgumentException
      */
     #[Route(
         path: '/v1/admin/configuration/{configuration}',
@@ -45,11 +49,19 @@ readonly class GetConfigurationController
     )]
     public function __invoke(SymfonyUser $symfonyUser, string $configuration): JsonResponse
     {
+        $cacheKey = 'system_configurations';
+        $cacheItem = $this->cache->getItem($cacheKey);
+        $cacheData = $cacheItem->isHit() ? (array)$cacheItem->get() : [];
+
+        if (array_key_exists($configuration, $cacheData)) {
+            return new JsonResponse($cacheData[$configuration]);
+        }
+
         $configurationEntity = $this->repository->findOneBy([
-            'configurationKey' => $configuration
+            'configurationKey' => $configuration,
         ]);
 
-        /** @var array<string, string|array<string, string>> $output */
+        /** @var array<string, mixed>|null $output */
         $output = JSON::decode(
             $this->serializer->serialize(
                 $configurationEntity,
@@ -60,6 +72,11 @@ readonly class GetConfigurationController
             ),
             true,
         );
+
+        $cacheData[$configuration] = $output;
+        $cacheItem->set($cacheData);
+        $cacheItem->expiresAfter(GetConfigurationsController::CACHE_TTL_IN_SECONDS);
+        $this->cache->save($cacheItem);
 
         return new JsonResponse($output);
     }

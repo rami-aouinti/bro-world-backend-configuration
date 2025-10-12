@@ -9,25 +9,19 @@ use App\General\Domain\Utils\JSON;
 use App\Configuration\Domain\Entity\Configuration;
 use App\Configuration\Domain\Repository\Interfaces\ConfigurationRepositoryInterface;
 use App\General\Infrastructure\ValueObject\SymfonyUser;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Exception\NotSupported;
 use JsonException;
 use Nelmio\ApiDocBundle\Attribute\Model;
 use OpenApi\Attributes as OA;
 use OpenApi\Attributes\JsonContent;
 use OpenApi\Attributes\Property;
-use Ramsey\Uuid\Uuid;
+use Psr\Cache\CacheItemPoolInterface;
+use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\SerializerInterface;
-use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 /**
  * @package App\Configuration
@@ -36,9 +30,12 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 #[OA\Tag(name: 'Configuration')]
 readonly class GetConfigurationsController
 {
+    private const CACHE_TTL_IN_SECONDS = 3600;
+
     public function __construct(
         private SerializerInterface $serializer,
-        private ConfigurationRepositoryInterface $repository
+        private ConfigurationRepositoryInterface $repository,
+        private CacheItemPoolInterface $cache
     ) {
     }
 
@@ -47,6 +44,7 @@ readonly class GetConfigurationsController
      *
      * @throws JsonException
      * @throws NotSupported
+     * @throws InvalidArgumentException
      */
     #[Route(
         path: '/v1/platform/configuration',
@@ -54,10 +52,21 @@ readonly class GetConfigurationsController
     )]
     public function __invoke(SymfonyUser $symfonyUser): JsonResponse
     {
+        $cacheKey = 'configurations_' . $symfonyUser->getUserIdentifier();
+        $cacheItem = $this->cache->getItem($cacheKey);
+
+        if ($cacheItem->isHit()) {
+            /** @var array<string, mixed> $cached */
+            $cached = (array)$cacheItem->get();
+
+            return new JsonResponse(array_values($cached));
+        }
+
         $configurations = $this->repository->findBy([
             'userId' => $symfonyUser->getUserIdentifier(),
         ]);
-        /** @var array<string, string|array<string, string>> $output */
+
+        /** @var array<int, array<string, mixed>> $output */
         $output = JSON::decode(
             $this->serializer->serialize(
                 $configurations,
@@ -69,6 +78,18 @@ readonly class GetConfigurationsController
             true,
         );
 
-        return new JsonResponse($output);
+        $mapped = [];
+
+        foreach ($output as $configuration) {
+            if (is_array($configuration) && array_key_exists('configurationKey', $configuration)) {
+                $mapped[(string)$configuration['configurationKey']] = $configuration;
+            }
+        }
+
+        $cacheItem->set($mapped);
+        $cacheItem->expiresAfter(self::CACHE_TTL_IN_SECONDS);
+        $this->cache->save($cacheItem);
+
+        return new JsonResponse(array_values($mapped));
     }
 }
