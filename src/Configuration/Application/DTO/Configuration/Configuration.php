@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Configuration\Application\DTO\Configuration;
 
+use App\Configuration\Domain\Entity\Configuration as Entity;
+use App\Configuration\Domain\Entity\Enum\FlagType;
 use App\General\Application\DTO\Interfaces\RestDtoInterface;
 use App\General\Application\DTO\RestDto;
 use App\General\Domain\Entity\Interfaces\EntityInterface;
-use App\Configuration\Domain\Entity\Configuration as Entity;
-use DateTimeInterface;
 use Override;
+use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -24,240 +25,147 @@ use function array_map;
  */
 class Configuration extends RestDto
 {
-
     #[Assert\NotBlank(message: 'User ID cannot be blank.')]
-    protected UuidInterface $userId;
+    protected ?UuidInterface $userId = null;
 
     #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    protected string $configurationKey = '';
+
     #[Assert\NotNull]
-    #[Assert\Length(min: 2, max: 255)]
-    protected string $title= '';
+    protected mixed $configurationValue = null;
 
     #[Assert\NotBlank]
+    #[Assert\Length(max: 255)]
+    protected string $contextKey = '';
+
     #[Assert\NotNull]
-    protected string $description = '';
+    protected ?UuidInterface $contextId = null;
 
-    #[Assert\NotBlank]
     #[Assert\NotNull]
-    protected string $gender = '';
+    protected ?UuidInterface $workplaceId = null;
 
-    protected UuidInterface $photo;
+    /**
+     * @var array<int, string>
+     */
+    #[Assert\Choice(callback: [self::class, 'availableFlagValues'], multiple: true, strict: true)]
+    protected array $flags = [];
 
-    #[Assert\Date(message: 'The birthday must be a valid date.')]
-    protected ?DateTimeInterface $birthday = null;
-
-    protected ?string $googleId = "";
-
-    protected ?string $githubId = "";
-
-    protected ?string $githubUrl = "";
-
-    protected ?string $instagramUrl = "";
-
-    protected ?string $linkedInId = "";
-
-    protected ?string $linkedInUrl = "";
-
-    protected ?string $twitterUrl = "";
-
-    protected ?string $facebookUrl = "";
-
-    protected ?string $phone = "";
-
-
-    public function getTitle(): string
-    {
-        return $this->title;
-    }
-
-    public function setTitle(string $title): self
-    {
-        $this->setVisited('title');
-        $this->title = $title;
-
-        return $this;
-    }
-
-    public function getDescription(): string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): self
-    {
-        $this->setVisited('description');
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getUserId(): UuidInterface
+    public function getUserId(): ?UuidInterface
     {
         return $this->userId;
     }
 
-    public function setUserId(UuidInterface $userId): self
+    public function setUserId(UuidInterface|string|null $userId): self
     {
         $this->setVisited('userId');
-        $this->userId = $userId;
+        $this->userId = $userId instanceof UuidInterface || $userId === null
+            ? $userId
+            : Uuid::fromString($userId);
 
         return $this;
     }
 
-    public function getGender(): string
+    public function getConfigurationKey(): string
     {
-        return $this->gender;
+        return $this->configurationKey;
     }
 
-    public function setGender(string $gender): self
+    public function setConfigurationKey(string $configurationKey): self
     {
-        $this->setVisited('gender');
-        $this->gender = $gender;
+        $this->setVisited('configurationKey');
+        $this->configurationKey = $configurationKey;
 
         return $this;
     }
 
-    public function getPhoto(): UuidInterface
+    public function getConfigurationValue(): mixed
     {
-        return $this->photo;
+        return $this->configurationValue;
     }
 
-    public function setPhoto(UuidInterface $photo): self
+    public function setConfigurationValue(mixed $configurationValue): self
     {
-        $this->setVisited('photo');
-        $this->photo = $photo;
+        $this->setVisited('configurationValue');
+        $this->configurationValue = $configurationValue;
 
         return $this;
     }
 
-    public function getBirthday(): ?DateTimeInterface
+    public function getContextKey(): string
     {
-        return $this->birthday;
+        return $this->contextKey;
     }
 
-    public function setBirthday(?DateTimeInterface $birthday): self
+    public function setContextKey(string $contextKey): self
     {
-        $this->setVisited('birthday');
-        $this->birthday = $birthday;
+        $this->setVisited('contextKey');
+        $this->contextKey = $contextKey;
 
         return $this;
     }
 
-    public function getGoogleId(): ?string
+    public function getContextId(): ?UuidInterface
     {
-        return $this->googleId;
+        return $this->contextId;
     }
 
-    public function setGoogleId(?string $googleId): self
+    public function setContextId(UuidInterface|string|null $contextId): self
     {
-        $this->setVisited('googleId');
-        $this->googleId = $googleId;
+        $this->setVisited('contextId');
+        $this->contextId = $contextId instanceof UuidInterface || $contextId === null
+            ? $contextId
+            : Uuid::fromString($contextId);
 
         return $this;
     }
 
-    public function getGithubId(): ?string
+    public function getWorkplaceId(): ?UuidInterface
     {
-        return $this->githubId;
+        return $this->workplaceId;
     }
 
-    public function setGithubId(?string $githubId): self
+    public function setWorkplaceId(UuidInterface|string|null $workplaceId): self
     {
-        $this->setVisited('githubId');
-        $this->githubId = $githubId;
+        $this->setVisited('workplaceId');
+        $this->workplaceId = $workplaceId instanceof UuidInterface || $workplaceId === null
+            ? $workplaceId
+            : Uuid::fromString($workplaceId);
 
         return $this;
     }
 
-    public function getGithubUrl(): ?string
+    /**
+     * @return array<int, string>
+     */
+    public function getFlags(): array
     {
-        return $this->githubUrl;
+        return $this->flags;
     }
 
-    public function setGithubUrl(?string $githubUrl): self
+    /**
+     * @param array<int, FlagType|string> $flags
+     */
+    public function setFlags(array $flags): self
     {
-        $this->setVisited('githubUrl');
-        $this->githubUrl = $githubUrl;
+        $this->setVisited('flags');
+        $this->flags = array_map(
+            static fn (FlagType|string $flag): string => $flag instanceof FlagType ? $flag->value : (string) $flag,
+            $flags,
+        );
 
         return $this;
     }
 
-    public function getInstagramUrl(): ?string
+    /**
+     * @return array<int, string>
+     */
+    public static function availableFlagValues(): array
     {
-        return $this->instagramUrl;
-    }
-
-    public function setInstagramUrl(?string $instagramUrl): self
-    {
-        $this->setVisited('instagramUrl');
-        $this->instagramUrl = $instagramUrl;
-
-        return $this;
-    }
-
-    public function getLinkedInId(): ?string
-    {
-        return $this->linkedInId;
-    }
-
-    public function setLinkedInId(?string $linkedInId): self
-    {
-        $this->setVisited('linkedInId');
-        $this->linkedInId = $linkedInId;
-
-        return $this;
-    }
-
-    public function getLinkedInUrl(): ?string
-    {
-        return $this->linkedInUrl;
-    }
-
-    public function setLinkedInUrl(?string $linkedInUrl): self
-    {
-        $this->setVisited('linkedInUrl');
-        $this->linkedInUrl = $linkedInUrl;
-
-        return $this;
-    }
-
-    public function getTwitterUrl(): ?string
-    {
-        return $this->twitterUrl;
-    }
-
-    public function setTwitterUrl(?string $twitterUrl): self
-    {
-        $this->setVisited('twitterUrl');
-        $this->twitterUrl = $twitterUrl;
-
-        return $this;
-    }
-
-    public function getFacebookUrl(): ?string
-    {
-        return $this->facebookUrl;
-    }
-
-    public function setFacebookUrl(?string $facebookUrl): self
-    {
-        $this->setVisited('facebookUrl');
-        $this->facebookUrl = $facebookUrl;
-
-        return $this;
-    }
-
-    public function getPhone(): ?string
-    {
-        return $this->phone;
-    }
-
-    public function setPhone(?string $phone): self
-    {
-        $this->setVisited('phone');
-        $this->phone = $phone;
-
-        return $this;
+        return array_map(
+            static fn (FlagType $flag): string => $flag->value,
+            FlagType::cases(),
+        );
     }
 
     /**
@@ -270,21 +178,13 @@ class Configuration extends RestDto
     {
         if ($entity instanceof Entity) {
             $this->id = $entity->getId();
-            $this->title = $entity->getTitle();
-            $this->description = $entity->getDescription();
             $this->userId = $entity->getUserId();
-            $this->photo = $entity->getPhoto();
-            $this->birthday = $entity->getBirthday();
-            $this->gender = $entity->getGender();
-            $this->googleId = $entity->getGoogleId();
-            $this->githubId = $entity->getGithubId();
-            $this->githubUrl = $entity->getGithubUrl();
-            $this->instagramUrl = $entity->getInstagramUrl();
-            $this->linkedInId = $entity->getLinkedInId();
-            $this->linkedInUrl = $entity->getLinkedInUrl();
-            $this->twitterUrl = $entity->getTwitterUrl();
-            $this->facebookUrl = $entity->getFacebookUrl();
-            $this->phone = $entity->getPhone();
+            $this->configurationKey = $entity->getConfigurationKey();
+            $this->configurationValue = $entity->getConfigurationValue();
+            $this->contextKey = $entity->getContextKey();
+            $this->contextId = $entity->getContextId();
+            $this->workplaceId = $entity->getWorkplaceId();
+            $this->flags = $entity->getFlags();
         }
 
         return $this;
