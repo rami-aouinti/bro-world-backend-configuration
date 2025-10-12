@@ -42,29 +42,6 @@ curl -H "Authorization: Bearer <token>" \
      http://localhost/api/v1/platform/configuration
 ```
 
-**Example response**
-
-```json
-[
-  {
-    "id": "11111111-2222-4333-8444-555555555555",
-    "configurationKey": "ui.theme",
-    "configurationValue": {
-      "_value": {
-        "mode": "dark",
-        "accentColor": "#0B7285"
-      }
-    },
-    "contextKey": "global",
-    "contextId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-    "workplaceId": null,
-    "flags": ["USER"],
-    "createdAt": "2024-03-18T10:17:24+00:00",
-    "updatedAt": "2024-03-19T08:02:11+00:00"
-  }
-]
-```
-
 ### `GET /v1/platform/configuration/{configurationKey}`
 
 Fetches a single configuration entry selected by `configurationKey` and scoped to the current user.
@@ -75,27 +52,6 @@ Fetches a single configuration entry selected by `configurationKey` and scoped t
 ```bash
 curl -H "Authorization: Bearer <token>" \
      http://localhost/api/v1/platform/configuration/ui.theme
-```
-
-**Example response**
-
-```json
-{
-  "id": "11111111-2222-4333-8444-555555555555",
-  "configurationKey": "ui.theme",
-  "configurationValue": {
-    "_value": {
-      "mode": "dark",
-      "accentColor": "#0B7285"
-    }
-  },
-  "contextKey": "global",
-  "contextId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-  "workplaceId": null,
-  "flags": ["USER"],
-  "createdAt": "2024-03-18T10:17:24+00:00",
-  "updatedAt": "2024-03-19T08:02:11+00:00"
-}
 ```
 
 ### `POST /v1/platform/configuration`
@@ -119,26 +75,6 @@ curl -X POST http://localhost/api/v1/platform/configuration \
          }'
 ```
 
-**Example response**
-
-```json
-{
-  "id": "11111111-2222-4333-8444-555555555555",
-  "configurationKey": "ui.theme",
-  "configurationValue": {
-    "_value": {
-      "mode": "dark"
-    }
-  },
-  "contextKey": "global",
-  "contextId": "aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee",
-  "workplaceId": null,
-  "flags": ["USER"],
-  "createdAt": "2024-03-18T10:17:24+00:00",
-  "updatedAt": "2024-03-19T08:02:11+00:00"
-}
-```
-
 ### `DELETE /v1/platform/configuration/{configurationKey}`
 
 Removes a configuration entry owned by the authenticated user and clears their cache entry.【F:src/Configuration/Transport/Controller/Api/Frontend/DeleteConfigurationController.php†L46-L70】
@@ -156,53 +92,9 @@ These routes are designed for administrative workflows. They are annotated as ad
 
 Returns every configuration entry flagged as `PROTECTED_SYSTEM`. The controller filters results after loading all rows, which allows administrators to review the protected catalogue.【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationsController.php†L51-L75】
 
-**Example response**
-
-```json
-[
-  {
-    "id": "99999999-aaaa-bbbb-cccc-dddddddddddd",
-    "configurationKey": "billing.fraudThreshold",
-    "configurationValue": {
-      "_value": {
-        "maxAttempts": 5,
-        "lockMinutes": 15
-      }
-    },
-    "contextKey": "global",
-    "contextId": null,
-    "workplaceId": null,
-    "flags": ["PROTECTED_SYSTEM"],
-    "createdAt": "2024-02-01T12:00:00+00:00",
-    "updatedAt": "2024-03-05T09:30:00+00:00"
-  }
-]
-```
-
 ### `GET /v1/admin/configuration/{configurationKey}`
 
 Fetches a specific configuration by key. Because these entries are global, the lookup does not scope by user identifier.【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationController.php†L42-L65】
-
-**Example response**
-
-```json
-{
-  "id": "99999999-aaaa-bbbb-cccc-dddddddddddd",
-  "configurationKey": "billing.fraudThreshold",
-  "configurationValue": {
-    "_value": {
-      "maxAttempts": 5,
-      "lockMinutes": 15
-    }
-  },
-  "contextKey": "global",
-  "contextId": null,
-  "workplaceId": null,
-  "flags": ["PROTECTED_SYSTEM"],
-  "createdAt": "2024-02-01T12:00:00+00:00",
-  "updatedAt": "2024-03-05T09:30:00+00:00"
-}
-```
 
 ### `POST /v1/admin/configuration`
 
@@ -213,38 +105,6 @@ Creates or updates a protected configuration. The controller invalidates the `sy
   - `contextKey` (string)
   - `configurationValue` (object or primitive)
 - **Implicit values** – `userId`, `contextId`, and `workplaceId` default to the admin user’s UUID; the `PROTECTED_SYSTEM` flag is set automatically.【F:src/Configuration/Transport/Controller/Api/Backend/PostConfigurationController.php†L69-L77】
-
-```bash
-curl -X POST http://localhost/api/v1/admin/configuration \
-     -H "Authorization: Bearer <token>" \
-     -H "Content-Type: application/json" \
-     -d '{
-           "configurationKey": "billing.fraudThreshold",
-           "contextKey": "global",
-           "configurationValue": {"maxAttempts": 5, "lockMinutes": 15}
-         }'
-```
-
-**Example response**
-
-```json
-{
-  "id": "99999999-aaaa-bbbb-cccc-dddddddddddd",
-  "configurationKey": "billing.fraudThreshold",
-  "configurationValue": {
-    "_value": {
-      "maxAttempts": 5,
-      "lockMinutes": 15
-    }
-  },
-  "contextKey": "global",
-  "contextId": null,
-  "workplaceId": null,
-  "flags": ["PROTECTED_SYSTEM"],
-  "createdAt": "2024-02-01T12:00:00+00:00",
-  "updatedAt": "2024-03-05T09:30:00+00:00"
-}
-```
 
 ### `DELETE /v1/admin/configuration/{configurationKey}`
 
