@@ -30,7 +30,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 #[OA\Tag(name: 'Configuration')]
 readonly class GetConfigurationsController
 {
-    private const CACHE_TTL_IN_SECONDS = 3600;
+    public const int CACHE_TTL_IN_SECONDS = 3600;
 
     public function __construct(
         private SerializerInterface $serializer,
