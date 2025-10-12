@@ -10,7 +10,7 @@ All routes are registered under the `/api` prefix via attribute routing, and res
 - **Content type** – Send JSON payloads encoded as `application/json`. Symfony converts the request body into the parameter bag consumed by the controllers.
 - **Identifiers** – Resource identifiers use UUID v1 strings. Back office endpoints also scope configuration rows by their `configurationKey`, `contextKey`, and `workplaceId` combination enforced through a unique constraint in the database.【F:src/Configuration/Domain/Entity/Configuration.php†L38-L116】
 - **Configuration payload** – Domain entities wrap user-defined values inside a `_value` envelope to support optional encryption of protected system flags.【F:src/Configuration/Domain/Entity/Configuration.php†L178-L189】【F:src/Configuration/Domain/Entity/Configuration.php†L241-L349】 Expect the `_value` wrapper in responses and provide either a primitive or structured JSON object in requests.
-- **Caching** – Controllers invalidate cache items that mirror configuration data (`configurations_<userId>` for user-specific data and `system_configurations` for admin data) whenever write operations succeed.【F:src/Configuration/Transport/Controller/Api/Frontend/PostConfigurationController.php†L62-L63】【F:src/Configuration/Transport/Controller/Api/Backend/PostConfigurationController.php†L62-L63】
+- **Caching** – Read controllers hydrate responses from Redis-backed caches keyed by `configurations_<userId>` (per-user data) and `system_configurations` (admin catalogue). Items live for one hour and are purged automatically by write operations before persisting changes.【F:src/Configuration/Transport/Controller/Api/Frontend/GetConfigurationsController.php†L43-L86】【F:src/Configuration/Transport/Controller/Api/Frontend/GetConfigurationController.php†L63-L91】【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationsController.php†L43-L86】【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationController.php†L63-L88】【F:src/Configuration/Transport/Controller/Api/Frontend/PostConfigurationController.php†L62-L63】【F:src/Configuration/Transport/Controller/Api/Backend/PostConfigurationController.php†L62-L63】
 
 ## Data Model
 
@@ -34,8 +34,8 @@ These routes operate on the authenticated user’s personal configurations. They
 
 Returns the list of configuration entries owned by the caller.
 
-- **Response 200** – Array of configuration objects filtered by the user’s UUID.【F:src/Configuration/Transport/Controller/Api/Frontend/GetConfigurationsController.php†L51-L73】
-- **Caching** – Responses read directly from the repository after cache invalidation on writes.
+- **Response 200** – Array of configuration objects filtered by the user’s UUID.【F:src/Configuration/Transport/Controller/Api/Frontend/GetConfigurationsController.php†L51-L86】
+- **Caching** – Responses are served from the cached map when available; cache misses trigger a repository lookup and update the entry for future calls.【F:src/Configuration/Transport/Controller/Api/Frontend/GetConfigurationsController.php†L43-L86】
 
 ```bash
 curl -H "Authorization: Bearer <token>" \
@@ -69,7 +69,7 @@ curl -H "Authorization: Bearer <token>" \
 
 Fetches a single configuration entry selected by `configurationKey` and scoped to the current user.
 
-- **Response 200** – Configuration object matching the key.
+- **Response 200** – Configuration object matching the key. Cached entries are reused until the TTL expires or a write invalidates the stored map.【F:src/Configuration/Transport/Controller/Api/Frontend/GetConfigurationController.php†L63-L91】
 - **Response 401/403** – Emitted when the token is missing or the user lacks permission.【F:src/Configuration/Transport/Controller/Api/Frontend/GetConfigurationController.php†L42-L107】
 
 ```bash
@@ -156,6 +156,8 @@ These routes are designed for administrative workflows. They are annotated as ad
 
 Returns every configuration entry flagged as `PROTECTED_SYSTEM`. The controller filters results after loading all rows, which allows administrators to review the protected catalogue.【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationsController.php†L51-L75】
 
+- **Caching** – Cached list lookups eliminate repeated serialization work and reduce load on the repository. A miss repopulates the cache and stores entries keyed by `configurationKey` for direct reuse by single-fetch operations.【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationsController.php†L43-L86】
+
 **Example response**
 
 ```json
@@ -181,7 +183,9 @@ Returns every configuration entry flagged as `PROTECTED_SYSTEM`. The controller 
 
 ### `GET /v1/admin/configuration/{configurationKey}`
 
-Fetches a specific configuration by key. Because these entries are global, the lookup does not scope by user identifier.【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationController.php†L42-L65】
+Fetches a specific configuration by key. Because these entries are global, the lookup does not scope by user identifier.【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationController.php†L42-L88】
+
+- **Caching** – Individual configuration reads share the cached catalogue created by the list endpoint, so subsequent requests avoid round-trips to Doctrine unless writes clear the cache.【F:src/Configuration/Transport/Controller/Api/Backend/GetConfigurationController.php†L63-L88】
 
 **Example response**
 
