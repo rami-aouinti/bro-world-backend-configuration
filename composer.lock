@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab5aabd72ba56c77c168678d7b9dce6e",
+    "content-hash": "69d7a88099e477326624ec44f9ed2caa",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -134,18 +134,26 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rami-aouinti/bro-world-core.git",
-                "reference": "59275f0efa10db561c832d738c7574adfac603f6"
+                "reference": "8ac64656bd5a43f5dfcfe0cf7c8e5a63360787d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rami-aouinti/bro-world-core/zipball/59275f0efa10db561c832d738c7574adfac603f6",
-                "reference": "59275f0efa10db561c832d738c7574adfac603f6",
+                "url": "https://api.github.com/repos/rami-aouinti/bro-world-core/zipball/8ac64656bd5a43f5dfcfe0cf7c8e5a63360787d5",
+                "reference": "8ac64656bd5a43f5dfcfe0cf7c8e5a63360787d5",
                 "shasum": ""
             },
             "require": {
                 "php": ">=8.2",
-                "symfony/config": "^7.0",
-                "symfony/framework-bundle": "^7.0"
+                "ramsey/uuid": "^4.6",
+                "ramsey/uuid-doctrine": "^2.1",
+                "symfony/config": "^7.2",
+                "symfony/framework-bundle": "^7.2",
+                "symfony/messenger": "^7.2",
+                "symfony/serializer": "^7.2",
+                "symfony/validator": "^7.2"
+            },
+            "suggest": {
+                "doctrine/orm": "^2.14 || ^3.0"
             },
             "default-branch": true,
             "type": "symfony-bundle",
@@ -158,12 +166,21 @@
             "license": [
                 "proprietary"
             ],
+            "authors": [
+                {
+                    "name": "Rami Aouinti",
+                    "email": "rami.aouinti@gmail.com",
+                    "homepage": "https://github.com/rami-aouinti",
+                    "role": "Developer"
+                }
+            ],
             "description": "Core utilities & services for Bro World projects",
+            "homepage": "https://github.com/rami-aouinti/bro-world-core",
             "support": {
                 "issues": "https://github.com/rami-aouinti/bro-world-core/issues",
                 "source": "https://github.com/rami-aouinti/bro-world-core/tree/master"
             },
-            "time": "2025-11-04T20:07:21+00:00"
+            "time": "2025-11-04T21:32:09+00:00"
         },
         {
             "name": "composer/semver",
