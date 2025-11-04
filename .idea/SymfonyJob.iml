@@ -38,6 +38,10 @@
       <sourceFolder url="file://$MODULE_DIR$/templates/tools/06_phpmd/vendor/phpmd/phpmd/src/bin" isTestSource="true" packagePrefix="PHPMD\" />
       <sourceFolder url="file://$MODULE_DIR$/templates/tools/08_rector/vendor/rector" isTestSource="true" packagePrefix="Rector\" />
       <sourceFolder url="file://$MODULE_DIR$/templates/tools/10_phpcpd/vendor/systemsdk/phpcpd/src" isTestSource="true" packagePrefix="Systemsdk\PhpCPD\" />
+      <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Application" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Integration" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/tests/Unit" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/bamarni/composer-bin-plugin" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/beberlei/doctrineextensions" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/behat/transliterator" />
@@ -180,6 +184,7 @@
       <excludeFolder url="file://$MODULE_DIR$/vendor/webmozart/assert" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/zircote/swagger-php" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/fakerphp/faker" />
+      <excludeFolder url="file://$MODULE_DIR$/vendor/bro-world/core-bundle" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

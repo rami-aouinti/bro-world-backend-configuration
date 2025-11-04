@@ -1,5 +1,5 @@
 {
-	"name": "systemsdk/docker-symfony-api",
+	"name": "bro-world/configuration-microservice",
 	"type": "project",
 	"description": "JSON REST API",
 	"keywords": [
@@ -13,20 +13,14 @@
 		"RabbitMQ",
 		"Elasticsearch"
 	],
-	"homepage": "https://github.com/systemsdk/docker-symfony-api",
-	"version": "v3.4.5",
-	"license": "MIT",
+	"homepage": "https://github.com/rami-aouinti/bro-world-backend-configuration",
+	"version": "v1.0.0",
+	"license": "proprietary",
 	"authors": [
 		{
-			"name": "Dmitriy Kravtsov",
-			"email": "dmytro.kravtsov@systemsdk.com",
-			"homepage": "https://github.com/systemsdk",
-			"role": "Developer"
-		},
-		{
-			"name": "Tarmo Leppänen",
-			"email": "tarmo.leppanen@protacon.com",
-			"homepage": "https://github.com/tarlepp",
+			"name": "Rami Aouinti",
+			"email": "rami.aouinti@gmail.com",
+			"homepage": "https://github.com/rami-aouinti",
 			"role": "Developer"
 		}
 	],
@@ -42,19 +36,20 @@
 		"ext-pdo": "*",
 		"ext-pdo_mysql": "*",
 		"beberlei/doctrineextensions": "^1.5",
-		"doctrine/doctrine-bundle": "^2.15.0",
-		"doctrine/doctrine-migrations-bundle": "^3.4.2",
-		"doctrine/orm": "^2.20.5",
+		"bro-world/core-bundle": "dev-master@dev",
+		"doctrine/doctrine-bundle": "^2.18.0",
+		"doctrine/doctrine-migrations-bundle": "^3.5.0",
+		"doctrine/orm": "^2.20.7",
 		"dukecity/command-scheduler-bundle": "^6.0.4",
-		"elasticsearch/elasticsearch": "^7.17.2",
-		"gedmo/doctrine-extensions": "^3.20.0",
+		"elasticsearch/elasticsearch": "^7.17.3",
+		"gedmo/doctrine-extensions": "^3.21.0",
 		"lexik/jwt-authentication-bundle": "^3.1.1",
 		"mark-gerarts/automapper-plus-bundle": "^1.5",
-		"matomo/device-detector": "^6.4.6",
+		"matomo/device-detector": "^6.4.7",
 		"matthiasnoback/symfony-console-form": "^6.0",
-		"nelmio/api-doc-bundle": "^5.4.0",
-		"nelmio/cors-bundle": "^2.5",
-		"phpdocumentor/reflection-docblock": "^5.6.2",
+		"nelmio/api-doc-bundle": "^5.6.5",
+		"nelmio/cors-bundle": "^2.6",
+		"phpdocumentor/reflection-docblock": "^5.6.3",
 		"ramsey/uuid-doctrine": "^2.1",
 		"symfony/amqp-messenger": "7.2.*",
 		"symfony/asset": "7.2.*",
@@ -65,7 +60,7 @@
 		"symfony/doctrine-messenger": "7.2.*",
 		"symfony/dotenv": "7.2.*",
 		"symfony/expression-language": "7.2.*",
-		"symfony/flex": "^2.8.1",
+		"symfony/flex": "^2.9.0",
 		"symfony/form": "7.2.*",
 		"symfony/framework-bundle": "7.2.*",
 		"symfony/http-client": "7.2.*",
@@ -84,16 +79,16 @@
 		"symfony/runtime": "7.2.*",
 		"symfony/security-bundle": "7.2.*",
 		"symfony/serializer": "7.2.*",
-		"symfony/stimulus-bundle": "^2.27.0",
+		"symfony/stimulus-bundle": "^2.31.0",
 		"symfony/string": "7.2.*",
 		"symfony/translation": "7.2.*",
 		"symfony/twig-bundle": "7.2.*",
-		"symfony/ux-turbo": "^2.27.0",
+		"symfony/ux-turbo": "^2.31.0",
 		"symfony/validator": "7.2.*",
 		"symfony/web-link": "7.2.*",
 		"symfony/yaml": "7.2.*",
-		"twig/extra-bundle": "^2.12|^3.21",
-		"twig/twig": "^2.12|^3.21.1"
+		"twig/extra-bundle": "^2.12|^3.22",
+		"twig/twig": "^2.12|^3.22.0"
 	},
 	"conflict": {
 		"symfony/debug": "<3.3",
@@ -102,8 +97,8 @@
 	},
 	"require-dev": {
 		"bamarni/composer-bin-plugin": "^1.8.2",
-		"doctrine/doctrine-fixtures-bundle": "^4.1",
-		"fakerphp/faker": "^1.24",
+		"doctrine/doctrine-fixtures-bundle": "^4.3",
+		"fakerphp/faker": "^1.24.1",
 		"roave/security-advisories": "dev-latest",
 		"symfony/browser-kit": "7.2.*",
 		"symfony/debug-bundle": "7.2.*",
@@ -143,7 +138,7 @@
 			"forward-command": true,
 			"target-directory": "tools"
 		},
-		"projectTitle": "Docker Symfony API",
+		"projectTitle": "Configuration Microservice",
 		"symfony": {
 			"allow-contrib": true,
 			"require": "7.2.*"
@@ -207,6 +202,6 @@
 		}
 	},
 	"support": {
-		"issues": "https://github.com/systemsdk/docker-symfony-api/issues"
+		"issues": "https://github.com/rami-aouinti/bro-world-backend-configuration/issues"
 	}
 }
