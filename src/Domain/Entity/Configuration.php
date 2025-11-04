@@ -251,7 +251,7 @@ class Configuration implements EntityInterface
     #[ORM\PostLoad]
     public function decryptConfigurationValue(): void
     {
-        $keyPath = dirname(__DIR__, 4) . '/encryption.key';
+        $keyPath = dirname(__DIR__, 3) . '/encryption.key';
         if (!$keyPath) {
             throw new RuntimeException('Encryption key file not found.');
         }
