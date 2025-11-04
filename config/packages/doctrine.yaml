@@ -40,8 +40,8 @@ doctrine:
                     Configuration:
                         type: attribute
                         is_bundle: false
-                        dir: '%kernel.project_dir%/src/Configuration/Domain/Entity'
-                        prefix: 'App\Configuration\Domain\Entity'
+                        dir: '%kernel.project_dir%/src/Domain/Entity'
+                        prefix: 'App\Domain\Entity'
                         alias: Configuration
                 dql:
                     datetime_functions:

@@ -1,7 +1,7 @@
 configuration-controllers:
     resource:
-        path: ../src/Configuration/Transport/Controller/Api/
-        namespace: App\Configuration\Transport\Controller\Api
+        path: ../src/Transport/Controller/Api/
+        namespace: App\Transport\Controller\Api
     type: attribute
     prefix: /api
     defaults:
