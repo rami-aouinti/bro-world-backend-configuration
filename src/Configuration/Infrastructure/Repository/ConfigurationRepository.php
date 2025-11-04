@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Configuration\Infrastructure\Repository;
 
-use App\General\Infrastructure\Repository\BaseRepository;
+use Bro\WorldCoreBundle\Infrastructure\Repository\BaseRepository;
 use App\Configuration\Domain\Entity\Configuration as Entity;
 use App\Configuration\Domain\Repository\Interfaces\ConfigurationRepositoryInterface;
 use Doctrine\Persistence\ManagerRegistry;

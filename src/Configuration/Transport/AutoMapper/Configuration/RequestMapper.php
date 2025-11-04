@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Configuration\Transport\AutoMapper\Configuration;
 
-use App\General\Transport\AutoMapper\RestRequestMapper;
+use Bro\WorldCoreBundle\Transport\AutoMapper\RestRequestMapper;
 
 /**
  * @package App\Configuration

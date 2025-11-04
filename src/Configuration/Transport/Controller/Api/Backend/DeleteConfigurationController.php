@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Configuration\Transport\Controller\Api\Backend;
 
-use App\General\Domain\Utils\JSON;
+use Bro\WorldCoreBundle\Domain\Utils\JSON;
 use App\Configuration\Domain\Entity\Configuration;
 use Doctrine\ORM\EntityManagerInterface;
 use JsonException;

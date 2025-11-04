@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Configuration\Transport\Controller\Api\Backend;
 
 use App\Configuration\Domain\Entity\Enum\FlagType;
-use App\General\Domain\Utils\JSON;
+use Bro\WorldCoreBundle\Domain\Utils\JSON;
 use App\Configuration\Domain\Entity\Configuration;
 use App\Configuration\Domain\Repository\Interfaces\ConfigurationRepositoryInterface;
-use App\General\Infrastructure\ValueObject\SymfonyUser;
+use Bro\WorldCoreBundle\Infrastructure\ValueObject\SymfonyUser;
 use Doctrine\ORM\Exception\NotSupported;
 use JsonException;
 use Nelmio\ApiDocBundle\Attribute\Model;

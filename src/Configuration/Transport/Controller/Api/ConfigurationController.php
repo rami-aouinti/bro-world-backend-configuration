@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Configuration\Transport\Controller\Api;
 
-use App\General\Transport\Rest\Controller;
-use App\General\Transport\Rest\ResponseHandler;
-use App\General\Transport\Rest\Traits\Actions;
+use Bro\WorldCoreBundle\Transport\Rest\Controller;
+use Bro\WorldCoreBundle\Transport\Rest\ResponseHandler;
+use Bro\WorldCoreBundle\Transport\Rest\Traits\Actions;
 use App\Configuration\Application\DTO\Configuration\ConfigurationCreate;
 use App\Configuration\Application\DTO\Configuration\ConfigurationPatch;
 use App\Configuration\Application\DTO\Configuration\ConfigurationUpdate;

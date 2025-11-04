@@ -8,7 +8,7 @@ use App\Configuration\Application\DTO\Configuration\ConfigurationCreate;
 use App\Configuration\Application\DTO\Configuration\ConfigurationPatch;
 use App\Configuration\Application\DTO\Configuration\ConfigurationUpdate;
 use App\Configuration\Transport\AutoMapper\Configuration\RequestMapper;
-use App\General\Transport\AutoMapper\RestAutoMapperConfiguration;
+use Bro\WorldCoreBundle\Transport\AutoMapper\RestAutoMapperConfiguration;
 
 /**
  * @package App\User

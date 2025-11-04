@@ -1,7 +1,7 @@
 framework:
     cache:
         # Unique name of your app: used to compute stable namespaces for cache keys.
-        prefix_seed: systemsdk/docker-symfony-api
+        prefix_seed: bro-world/configuration-microservice
 
         # The "app" cache stores to the filesystem by default.
         # The data in this cache should persist between deploys.

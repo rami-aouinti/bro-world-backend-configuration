@@ -6,9 +6,9 @@ namespace App\Configuration\Application\DTO\Configuration;
 
 use App\Configuration\Domain\Entity\Configuration as Entity;
 use App\Configuration\Domain\Entity\Enum\FlagType;
-use App\General\Application\DTO\Interfaces\RestDtoInterface;
-use App\General\Application\DTO\RestDto;
-use App\General\Domain\Entity\Interfaces\EntityInterface;
+use Bro\WorldCoreBundle\Application\DTO\Interfaces\RestDtoInterface;
+use Bro\WorldCoreBundle\Application\DTO\RestDto;
+use Bro\WorldCoreBundle\Domain\Entity\Interfaces\EntityInterface;
 use Override;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;

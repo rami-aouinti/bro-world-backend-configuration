@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Configuration\Domain\Entity;
 
-use App\General\Domain\Entity\Interfaces\EntityInterface;
-use App\General\Domain\Entity\Traits\Timestampable;
-use App\General\Domain\Entity\Traits\Uuid;
+use Bro\WorldCoreBundle\Domain\Entity\Interfaces\EntityInterface;
+use Bro\WorldCoreBundle\Domain\Entity\Traits\Timestampable;
+use Bro\WorldCoreBundle\Domain\Entity\Traits\Uuid;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
