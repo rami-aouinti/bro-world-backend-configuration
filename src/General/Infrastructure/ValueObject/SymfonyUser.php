@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * Class SymfonyUser
  *
  * @package App\General\Infrastructure\ValueObject
- * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
+ * @author  Rami Aouinti <rami.aouinti@gmail.com>
  */
 final readonly class SymfonyUser implements UserInterface
 {

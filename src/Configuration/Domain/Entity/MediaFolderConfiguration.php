@@ -20,7 +20,7 @@ use Throwable;
  * Class MediaFolderConfiguration
  *
  * @package App\Configuration\Domain\Entity
- * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
+ * @author  Rami Aouinti <rami.aouinti@gmail.com>
  */
 #[ORM\Entity]
 #[ORM\Table(name: 'media_folder_configuration')]

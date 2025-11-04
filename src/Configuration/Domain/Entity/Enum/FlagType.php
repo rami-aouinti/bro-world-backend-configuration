@@ -8,7 +8,7 @@ namespace App\Configuration\Domain\Entity\Enum;
  * Class FlagType
  *
  * @package App\Configuration\Domain\Entity\Enum
- * @author  Rami Aouinti <rami.aouinti@tkdeutschland.de>
+ * @author  Rami Aouinti <rami.aouinti@gmail.com>
  */
 enum FlagType: string
 {
