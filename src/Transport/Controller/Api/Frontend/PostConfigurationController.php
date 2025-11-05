@@ -58,20 +58,20 @@ readonly class PostConfigurationController
 
         $configuration = $this->repository->findOneBy([
             'configurationKey' => $request->request->get('configurationKey'),
-            'userId' => $symfonyUser->getUserIdentifier()
+            'userId' => $symfonyUser->getId()
         ]);
 
         if(!$configuration) {
             $configuration = new Configuration();
-            $configuration->setUserId(Uuid::fromString($symfonyUser->getUserIdentifier()));
+            $configuration->setUserId(Uuid::fromString($symfonyUser->getId()));
             $configuration->setConfigurationKey($request->request->get('configurationKey'));
-            $configuration->setContextId(Uuid::fromString($symfonyUser->getUserIdentifier()));
+            $configuration->setContextId(Uuid::fromString($request->request->get('contextId')));
             $configuration->setContextKey($request->request->get('contextKey'));
-            $configuration->setWorkplaceId(Uuid::fromString($symfonyUser->getUserIdentifier()));
+            $configuration->setWorkplaceId(Uuid::fromString($request->request->get('workplaceId')));;
             $configuration->setFlags([FlagType::USER->value]);
         }
-        $configArray = $request->request->all();
-        $configuration->setConfigurationValue($configArray['configurationValue']);
+
+        $configuration->setConfigurationValue($request->request->get('configurationValue'));
 
         $this->entityManager->persist($configuration);
         $this->entityManager->flush();
