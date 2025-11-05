@@ -53,39 +53,37 @@ readonly class PostConfigurationController
     )]
     public function __invoke(SymfonyUser $symfonyUser, Request $request): JsonResponse
     {
-        $cacheKey = "configurations_" . $symfonyUser->getUserIdentifier();
+        $data = JSON::decode($request->getContent(), true); // <- lit le body JSON
+
+        $cacheKey = 'configurations_'.$symfonyUser->getUserIdentifier();
         $this->cache->deleteItem($cacheKey);
 
         $configuration = $this->repository->findOneBy([
-            'configurationKey' => $request->request->get('configurationKey'),
-            'userId' => $symfonyUser->getId()
+            'configurationKey' => $data['configurationKey'] ?? null,
+            'userId'          => $symfonyUser->getId(),
         ]);
 
-        if(!$configuration) {
+        if (!$configuration) {
             $configuration = new Configuration();
             $configuration->setUserId(Uuid::fromString($symfonyUser->getId()));
-            $configuration->setConfigurationKey($request->request->get('configurationKey'));
-            $configuration->setContextId(Uuid::fromString($request->request->get('contextId')));
-            $configuration->setContextKey($request->request->get('contextKey'));
-            $configuration->setWorkplaceId(Uuid::fromString($request->request->get('workplaceId')));;
+            $configuration->setConfigurationKey($data['configurationKey']);
+            $configuration->setContextId(Uuid::fromString($data['contextId']));
+            $configuration->setContextKey($data['contextKey']);
+            $configuration->setWorkplaceId(Uuid::fromString($data['workplaceId']));
             $configuration->setFlags([FlagType::USER->value]);
         }
 
-        $configuration->setConfigurationValue($request->request->get('configurationValue'));
+        $configuration->setConfigurationValue($data['configurationValue']);
 
         $this->entityManager->persist($configuration);
         $this->entityManager->flush();
 
-        /** @var array<string, string|array<string, string>> $output */
         $output = JSON::decode(
             $this->serializer->serialize(
                 $configuration,
                 'json',
-                [
-                    'groups' => 'Configuration',
-                ]
-            ),
-            true,
+                ['groups' => 'Configuration']),
+            true
         );
 
         return new JsonResponse($output);
