@@ -55,7 +55,7 @@ readonly class PostConfigurationController
     {
         $data = JSON::decode($request->getContent(), true);
 
-        $cacheKey = 'configurations_'.$symfonyUser->getUserIdentifier() . '_' . $data['contextId'] . '_' . $data['workplaceId'] . '_' . $data['contextKey'] . '_' . $data['configurationKey'];
+        $cacheKey = 'configurations_'.$symfonyUser->getUserIdentifier();
         $this->cache->deleteItem($cacheKey);
 
         $configuration = $this->repository->findOneBy([
