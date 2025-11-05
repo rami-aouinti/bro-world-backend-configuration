@@ -53,16 +53,16 @@ readonly class PostConfigurationController
     )]
     public function __invoke(SymfonyUser $symfonyUser, Request $request): JsonResponse
     {
-        $data = JSON::decode($request->getContent(), true); // <- lit le body JSON
+        $data = JSON::decode($request->getContent(), true);
 
-        $cacheKey = 'configurations_'.$symfonyUser->getUserIdentifier();
+        $cacheKey = 'configurations_'.$symfonyUser->getUserIdentifier() . '_' . $data['contextId'] . '_' . $data['workplaceId'] . '_' . $data['contextKey'] . '_' . $data['configurationKey'];
         $this->cache->deleteItem($cacheKey);
 
         $configuration = $this->repository->findOneBy([
-            'contextKey' => $data['contextKey'] ?? null,
-            'configurationKey' => $data['configurationKey'] ?? null,
+            'contextKey' => $data['contextKey'],
+            'configurationKey' => $data['configurationKey'],
             'userId'          => $symfonyUser->getId(),
-            'workplaceId'          => $data['workplaceId'] ?? null,
+            'workplaceId'          => $data['workplaceId'],
         ]);
 
         if (!$configuration) {
