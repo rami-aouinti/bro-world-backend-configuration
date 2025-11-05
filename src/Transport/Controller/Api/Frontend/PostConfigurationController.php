@@ -59,6 +59,7 @@ readonly class PostConfigurationController
         $this->cache->deleteItem($cacheKey);
 
         $configuration = $this->repository->findOneBy([
+            'contextKey' => $data['contextKey'] ?? null,
             'configurationKey' => $data['configurationKey'] ?? null,
             'userId'          => $symfonyUser->getId(),
         ]);
