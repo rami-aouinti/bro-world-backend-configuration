@@ -50,7 +50,7 @@ class MediaFolderConfiguration implements EntityInterface
     private bool $createThumbnails = false;
 
     #[ORM\Column(type: 'blob', nullable: true)]
-    private $mediaThumbnailSizesRo;
+    private mixed $mediaThumbnailSizesRo;
 
     #[ORM\Column(type: 'boolean')]
     private bool $private = false;
@@ -87,7 +87,7 @@ class MediaFolderConfiguration implements EntityInterface
     /**
      * @return mixed
      */
-    public function getMediaThumbnailSizesRo()
+    public function getMediaThumbnailSizesRo(): mixed
     {
         return $this->mediaThumbnailSizesRo;
     }
