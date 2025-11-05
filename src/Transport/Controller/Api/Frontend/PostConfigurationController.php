@@ -62,6 +62,7 @@ readonly class PostConfigurationController
             'contextKey' => $data['contextKey'] ?? null,
             'configurationKey' => $data['configurationKey'] ?? null,
             'userId'          => $symfonyUser->getId(),
+            'workplaceId'          => $data['workplaceId'] ?? null,
         ]);
 
         if (!$configuration) {
