@@ -7,6 +7,7 @@ namespace App\Domain\Entity;
 use Bro\WorldCoreBundle\Domain\Entity\Interfaces\EntityInterface;
 use Bro\WorldCoreBundle\Domain\Entity\Traits\Timestampable;
 use Bro\WorldCoreBundle\Domain\Entity\Traits\Uuid;
+use Bro\WorldCoreBundle\Domain\Entity\Traits\WorkplaceTrait;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Override;
@@ -28,6 +29,7 @@ class MediaFolderConfiguration implements EntityInterface
 {
     use Uuid;
     use Timestampable;
+    use WorkplaceTrait;
 
     public const string SET_USER_Configuration = 'Configuration';
 
@@ -43,10 +45,6 @@ class MediaFolderConfiguration implements EntityInterface
         'Configuration.id'
     ])]
     private UuidInterface $id;
-
-    #[ORM\Column(type: 'uuid', nullable: true)]
-    #[Assert\NotNull]
-    private ?UuidInterface $workplaceId = null;
 
     #[ORM\Column(type: 'boolean')]
     private bool $createThumbnails = false;
@@ -72,16 +70,6 @@ class MediaFolderConfiguration implements EntityInterface
     public function getId(): string
     {
         return $this->id->toString();
-    }
-
-    public function getWorkplaceId(): ?UuidInterface
-    {
-        return $this->workplaceId;
-    }
-
-    public function setWorkplaceId(?UuidInterface $workplaceId): void
-    {
-        $this->workplaceId = $workplaceId;
     }
 
     public function isCreateThumbnails(): bool

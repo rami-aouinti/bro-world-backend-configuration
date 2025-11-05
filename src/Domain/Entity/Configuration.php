@@ -8,6 +8,7 @@ use App\Domain\Entity\Enum\FlagType;
 use Bro\WorldCoreBundle\Domain\Entity\Interfaces\EntityInterface;
 use Bro\WorldCoreBundle\Domain\Entity\Traits\Timestampable;
 use Bro\WorldCoreBundle\Domain\Entity\Traits\Uuid;
+use Bro\WorldCoreBundle\Domain\Entity\Traits\WorkplaceTrait;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
@@ -49,6 +50,7 @@ class Configuration implements EntityInterface
 {
     use Uuid;
     use Timestampable;
+    use WorkplaceTrait;
 
     public const string SET_USER_CONFIGURATION = 'configuration';
 
@@ -107,14 +109,6 @@ class Configuration implements EntityInterface
         'Configuration.contextId'
     ])]
     private ?UuidInterface $contextId = null;
-
-    #[ORM\Column(type: 'uuid', nullable: true)]
-    #[Assert\NotNull]
-    #[Groups([
-        'Configuration',
-        'Configuration.workplaceId'
-    ])]
-    private ?UuidInterface $workplaceId = null;
 
     #[ORM\Column(type: 'json', nullable: true, enumType: FlagType::class)]
     #[Assert\Choice(callback: [FlagType::class, 'cases'], multiple: true, strict: true)]
@@ -207,16 +201,6 @@ class Configuration implements EntityInterface
     public function setContextId(?UuidInterface $contextId): void
     {
         $this->contextId = $contextId;
-    }
-
-    public function getWorkplaceId(): ?UuidInterface
-    {
-        return $this->workplaceId;
-    }
-
-    public function setWorkplaceId(?UuidInterface $workplaceId): void
-    {
-        $this->workplaceId = $workplaceId;
     }
 
     public function getFlags(): array

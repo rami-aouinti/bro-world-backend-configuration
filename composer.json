@@ -37,7 +37,7 @@
 		"ext-pdo_mysql": "*",
 		"beberlei/doctrineextensions": "^1.5",
 		"bro-world/core-bundle": "dev-master@dev",
-		"doctrine/doctrine-bundle": "^2.18.0",
+		"doctrine/doctrine-bundle": "^2.18.1",
 		"doctrine/doctrine-migrations-bundle": "^3.5.0",
 		"doctrine/orm": "^2.20.7",
 		"dukecity/command-scheduler-bundle": "^6.0.4",

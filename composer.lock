@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d15f04c6417ed6d1cc2b4686b352de8",
+    "content-hash": "74a4e227a24e80074a92b3726860cea2",
     "packages": [
         {
             "name": "beberlei/doctrineextensions",
@@ -134,16 +134,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rami-aouinti/bro-world-core.git",
-                "reference": "2c4bd4acb430087289000b13ffc63348fe9b1ae3"
+                "reference": "d5be8c4555f9a24a1ef89011acee20af3c484ec4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rami-aouinti/bro-world-core/zipball/2c4bd4acb430087289000b13ffc63348fe9b1ae3",
-                "reference": "2c4bd4acb430087289000b13ffc63348fe9b1ae3",
+                "url": "https://api.github.com/repos/rami-aouinti/bro-world-core/zipball/d5be8c4555f9a24a1ef89011acee20af3c484ec4",
+                "reference": "d5be8c4555f9a24a1ef89011acee20af3c484ec4",
                 "shasum": ""
             },
             "require": {
-                "php": ">=8.2",
+                "php": ">=8.3",
                 "ramsey/uuid": "^4.6",
                 "ramsey/uuid-doctrine": "^2.1",
                 "symfony/config": "^7.2",
@@ -157,6 +157,11 @@
             },
             "default-branch": true,
             "type": "symfony-bundle",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.1.x-dev"
+                }
+            },
             "autoload": {
                 "psr-4": {
                     "Bro\\WorldCoreBundle\\": "src/"
@@ -180,7 +185,7 @@
                 "issues": "https://github.com/rami-aouinti/bro-world-core/issues",
                 "source": "https://github.com/rami-aouinti/bro-world-core/tree/master"
             },
-            "time": "2025-11-05T00:31:30+00:00"
+            "time": "2025-11-05T19:58:00+00:00"
         },
         {
             "name": "composer/semver",
@@ -694,16 +699,16 @@
         },
         {
             "name": "doctrine/doctrine-bundle",
-            "version": "2.18.0",
+            "version": "2.18.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/DoctrineBundle.git",
-                "reference": "cd5d4da6a5f7cf3d8708e17211234657b5eb4e95"
+                "reference": "b769877014de053da0e5cbbb63d0ea2f3b2fea76"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/cd5d4da6a5f7cf3d8708e17211234657b5eb4e95",
-                "reference": "cd5d4da6a5f7cf3d8708e17211234657b5eb4e95",
+                "url": "https://api.github.com/repos/doctrine/DoctrineBundle/zipball/b769877014de053da0e5cbbb63d0ea2f3b2fea76",
+                "reference": "b769877014de053da0e5cbbb63d0ea2f3b2fea76",
                 "shasum": ""
             },
             "require": {
@@ -795,7 +800,7 @@
             ],
             "support": {
                 "issues": "https://github.com/doctrine/DoctrineBundle/issues",
-                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.18.0"
+                "source": "https://github.com/doctrine/DoctrineBundle/tree/2.18.1"
             },
             "funding": [
                 {
@@ -811,7 +816,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2025-10-11T04:43:27+00:00"
+            "time": "2025-11-05T14:42:10+00:00"
         },
         {
             "name": "doctrine/doctrine-migrations-bundle",
