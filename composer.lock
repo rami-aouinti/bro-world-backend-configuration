@@ -134,12 +134,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/rami-aouinti/bro-world-core.git",
-                "reference": "0b88d65bb546cf72e6a45475ab9dfc5e51bbe7cf"
+                "reference": "2c4bd4acb430087289000b13ffc63348fe9b1ae3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/rami-aouinti/bro-world-core/zipball/0b88d65bb546cf72e6a45475ab9dfc5e51bbe7cf",
-                "reference": "0b88d65bb546cf72e6a45475ab9dfc5e51bbe7cf",
+                "url": "https://api.github.com/repos/rami-aouinti/bro-world-core/zipball/2c4bd4acb430087289000b13ffc63348fe9b1ae3",
+                "reference": "2c4bd4acb430087289000b13ffc63348fe9b1ae3",
                 "shasum": ""
             },
             "require": {
@@ -180,7 +180,7 @@
                 "issues": "https://github.com/rami-aouinti/bro-world-core/issues",
                 "source": "https://github.com/rami-aouinti/bro-world-core/tree/master"
             },
-            "time": "2025-11-04T22:39:53+00:00"
+            "time": "2025-11-05T00:31:30+00:00"
         },
         {
             "name": "composer/semver",

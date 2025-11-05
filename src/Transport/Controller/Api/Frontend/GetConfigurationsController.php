@@ -58,7 +58,7 @@ readonly class GetConfigurationsController
         }
 
         $configurations = $this->repository->findBy([
-            'userId' => $symfonyUser->getUserIdentifier(),
+            'userId' => $symfonyUser->getId(),
         ]);
 
         /** @var array<int, array<string, mixed>> $output */
