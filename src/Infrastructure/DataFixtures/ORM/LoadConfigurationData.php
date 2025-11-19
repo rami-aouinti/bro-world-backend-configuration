@@ -21,6 +21,8 @@ use Throwable;
  */
 final class LoadConfigurationData extends Fixture implements OrderedFixtureInterface
 {
+    public const int CONFIGURATION_COUNT = 10;
+
     /**
      * Load data fixtures with the passed EntityManager
      *
@@ -53,19 +55,20 @@ final class LoadConfigurationData extends Fixture implements OrderedFixtureInter
     {
         $faker = Factory::create('en_US');
 
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < self::CONFIGURATION_COUNT; $i++) {
             $configuration = new Configuration();
-            $configuration->setConfigurationKey('system.smtp.settings.user.test');
+            $configuration->setConfigurationKey(sprintf('system.smtp.settings.user.test_%d', $i + 1));
             $configurationValue = [
                 'direction' => [
-                    'username' => 'username_user',
-                    'password' => 'password_user',
+                    'username' => $faker->userName(),
+                    'password' => $faker->password(),
                 ],
+                'transport' => $faker->randomElement(['smtp', 'sendmail', 'native']),
             ];
             $configuration->setConfigurationValue($configurationValue);
-            $configuration->setContextKey('user');
-            $configuration->setContextId(Uuid::fromString('5d6ae46c-ce1f-376f-82a6-28b0054083b7'));
-            $configuration->setWorkplaceId(Uuid::fromString('95a6e45d-da43-345b-99b1-611e27d4ba2e'));
+            $configuration->setContextKey(sprintf('user_%d', $i + 1));
+            $configuration->setContextId(Uuid::uuid4());
+            $configuration->setWorkplaceId(Uuid::uuid4());
             $configuration->setFlags([FlagType::PROTECTED_SYSTEM->value]);
             $manager->persist($configuration);
         }
